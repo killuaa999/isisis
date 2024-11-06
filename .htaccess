@@ -6,19 +6,12 @@
 
 RewriteEngine on
 
-# Domain: example.com
-# RewriteBase /
+# Redirect all traffic to HTTPS and www
+RewriteCond %{HTTPS} off [OR]
+RewriteCond %{HTTP_HOST} ^theflycenter\.com [NC]
+RewriteRule ^(.*)$ https://www.theflycenter.com/$1 [L,R=301]
 
-# SSL RewriteCond
-RewriteCond %{HTTPS} off
-RewriteCond %{ENV:HTTPS} !on
-RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
-
-# Redirect to www (optional)
-RewriteCond %{HTTP_HOST} ^example\.com [NC]
-RewriteRule ^(.*)$ https://www.example.com/$1 [L,R=301]
-
-# URL rewriting
+# URL rewriting for PrestaShop
 RewriteCond %{REQUEST_FILENAME} -s [OR]
 RewriteCond %{REQUEST_FILENAME} -l [OR]
 RewriteCond %{REQUEST_FILENAME} -d
@@ -57,16 +50,4 @@ RewriteRule ^.*$ index.php [NC,L]
 
 <IfModule mod_rewrite.c>
     RewriteCond %{HTTP_USER_AGENT} libwww-perl.* 
-    RewriteRule .* - [F,L]
-</IfModule>
-
-# Prevent access to certain folders and files
-<FilesMatch "\.(tpl|yml|log|ini|sh|inc|bak|sql)$">
-    Order allow,deny
-    Deny from all
-</FilesMatch>
-
-# Custom error documents
-ErrorDocument 404 /404.php
-
-# end Do not remove this comment, PrestaShop will keep automatically the code outside this comment when .htaccess will be generated again
+    RewriteRule .* - [F
